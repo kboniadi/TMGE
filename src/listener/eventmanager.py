@@ -18,16 +18,6 @@ class TickEvent(Event):
     def __init__ (self):
         self.name = "Tick event"
     
-    
-class InputEvent(Event):
-    def __init__(self, unicodechar, clickpos, event=None):
-        self.name = "Input event"
-        self.char = unicodechar
-        self.clickpos = clickpos
-        self.event = event
-    def __str__(self):
-        return '%s, char=%s, clickpos=%s' % (self.name, self.char, self.clickpos)
-    
 class InitializeEvent(Event):
     def __init__ (self):
         self.name = "Initialize event"
@@ -57,10 +47,6 @@ class EventManagerWeak:
             del self.cache[observer]
         
     def notify(self, event: 'Event'):
-        if not isinstance(event, TickEvent):
-            pass
-            # print the event (unless it is TickEvent)
-            # print(str(event))
         for obs in self.cache:
             obs.update(event)
     
