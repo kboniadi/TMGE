@@ -4,33 +4,34 @@ import src.common.constants as Constants
 from src.listener.eventmanager import (EventManagerWeak, QuitEvent,
                                        StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
-from src.model.GameEngine import GameEngine
+from src.model.gameengine import GameEngine
 
 
 class Keyboard(IObserver):
-    def __init__(self, evManager: 'EventManagerWeak', model: 'GameEngine'):
+    def __init__(self, evManager: 'EventManagerWeak', engine: 'GameEngine'):
         self.evManager = evManager
         evManager.register(self)
-        self.model = model
+        self.model = engine
+        self.game = engine.game
 
     def update(self, event):
         if isinstance(event, TickEvent):
-            self.model.grid = self.model.create_grid()
-            self.model.fall_time += self.model.clock.get_rawtime()
-            self.model.level_time += self.model.clock.get_rawtime()
+            self.game.grid = self.game.create_grid()
+            self.game.fall_time += self.model.clock.get_rawtime()
+            self.game.level_time += self.model.clock.get_rawtime()
 
-            if self.model.level_time/1000 > 4:
-                self.model.level_time = 0
-                if self.model.fall_speed > 0.15:
-                    self.model.fall_speed -= 0.005
+            if self.game.level_time/1000 > 4:
+                self.game.level_time = 0
+                if self.game.fall_speed > 0.15:
+                    self.game.fall_speed -= 0.005
 
             # PIECE FALLING CODE
-            if self.model.fall_time/1000 >= self.model.fall_speed:
-                self.model.fall_time = 0
-                self.model.current_piece.y += 1
-                if not (self.model.valid_space()) and self.model.current_piece.y > 0:
-                    self.model.current_piece.y -= 1
-                    self.model.change_piece = True
+            if self.game.fall_time/1000 >= self.game.fall_speed:
+                self.game.fall_time = 0
+                self.game.current_piece.y += 1
+                if not (self.game.valid_space()) and self.game.current_piece.y > 0:
+                    self.game.current_piece.y -= 1
+                    self.game.change_piece = True
             
             for event in pygame.event.get():
                 # handle window manager closing our window
@@ -48,29 +49,29 @@ class Keyboard(IObserver):
                         if currentstate == Constants.STATE_END:
                             self.keydownend(event)
         
-            shape_pos = self.model.convert_shape_format(self.model.current_piece)
+            shape_pos = self.game.convert_shape_format(self.game.current_piece)
 
             # add piece to the grid for drawing
             for i in range(len(shape_pos)):
                 x, y = shape_pos[i]
                 if y > -1:
-                    self.model.grid[y][x] = self.model.current_piece.color
+                    self.game.grid[y][x] = self.game.current_piece.color
 
             # IF PIECE HIT GROUND
-            if self.model.change_piece:
+            if self.game.change_piece:
                 for pos in shape_pos:
                     p = (pos[0], pos[1])
-                    self.model.locked_positions[p] = self.model.current_piece.color
-                self.model.current_piece = self.model.next_piece
-                self.model.next_piece = self.model.get_shape()
-                self.model.change_piece = False
+                    self.game.locked_positions[p] = self.game.current_piece.color
+                self.game.current_piece = self.game.next_piece
+                self.game.next_piece = self.game.get_shape()
+                self.game.change_piece = False
 
                 # call four times to check for multiple clear rows
-                if self.model.clear_rows():
-                    self.model.score += 10
+                if self.game.clear_rows():
+                    self.game.score += 10
             
              # Check if user lost
-            if self.model.check_lost():
+            if self.game.check_lost():
                 self.evManager.notify(StateChangeEvent(Constants.STATE_END))
 
     def keydownmenu(self, event):
@@ -87,26 +88,26 @@ class Keyboard(IObserver):
         elif event.key == pygame.K_q:
             self.evManager.notify(StateChangeEvent(Constants.STATE_MENU))
         elif event.key == pygame.K_LEFT:
-            self.model.current_piece.x -= 1
-            if not self.model.valid_space():
-                self.model.current_piece.x += 1
+            self.game.current_piece.x -= 1
+            if not self.game.valid_space():
+                self.game.current_piece.x += 1
         elif event.key == pygame.K_RIGHT:
-            self.model.current_piece.x += 1
-            if not self.model.valid_space():
-                self.model.current_piece.x -= 1
+            self.game.current_piece.x += 1
+            if not self.game.valid_space():
+                self.game.current_piece.x -= 1
         elif event.key == pygame.K_UP:
             # rotate shape
-            self.model.current_piece.rotation = self.model.current_piece.rotation + \
-                1 % len(self.model.current_piece.shape)
-            if not self.model.valid_space():
-                self.model.current_piece.rotation = self.model.current_piece.rotation - \
-                    1 % len(self.model.current_piece.shape)
+            self.game.current_piece.rotation = self.game.current_piece.rotation + \
+                1 % len(self.game.current_piece.shape)
+            if not self.game.valid_space():
+                self.game.current_piece.rotation = self.game.current_piece.rotation - \
+                    1 % len(self.game.current_piece.shape)
 
         if event.key == pygame.K_DOWN:
             # move shape down
-            self.model.current_piece.y += 1
-            if not self.model.valid_space():
-                self.model.current_piece.y -= 1
+            self.game.current_piece.y += 1
+            if not self.game.valid_space():
+                self.game.current_piece.y -= 1
     
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())

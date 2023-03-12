@@ -3,7 +3,7 @@ import pygame
 import src.common.constants as Constants
 from src.listener.iobserver import IObserver
 from src.listener.eventmanager import EventManagerWeak, InitializeEvent, QuitEvent, StateChangeEvent, TickEvent
-from src.model.GameEngine import GameEngine
+from src.model.gameengine import GameEngine
 
 
 class Canvas(IObserver):
@@ -49,8 +49,8 @@ class Canvas(IObserver):
         pygame.display.flip()
 
     def rendergame(self):
-        self.draw_window(self.model.grid)
-        self.draw_next_shape(self.model.next_piece)
+        self.draw_window(self.model.game.grid)
+        self.draw_next_shape(self.model.game.next_piece)
         pygame.display.update()
 
     def renderGameOver(self):

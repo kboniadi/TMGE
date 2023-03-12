@@ -1,15 +1,14 @@
-class iTileGame:
-	def __init__(self):
-		pass
+from abc import ABC, abstractmethod
 
+class ITileGame(ABC):
+	@abstractmethod
 	def initialize(self):
-		raise NotImplementedError("Subclass must implement this method")
-
+		pass
 	
 	def moveTile(tile, delta_x, delta_y):
 		pass
 
-	def findMatches():
+	def addpiece():
 		pass
 
 	def getCanvas():
