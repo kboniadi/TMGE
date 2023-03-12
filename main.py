@@ -1,5 +1,5 @@
-from src.user.User import User
-from src.user.Player import Player
+from src.model.user import User
+from src.model.player import Player
 from src.controller.keyboard import Keyboard
 from src.listener.eventmanager import EventManagerWeak
 from src.model.GameEngine import GameEngine
@@ -37,6 +37,7 @@ if __name__ == '__main__':
         print("--------------------")
         num_players = int(input())
     players = [Player(i + 1, 0) for i in range(0, num_players)]
+    user.players = players
     print("--------------------")
     print("Please input 1 or 2 to select one of the following games: ")
     print("1. Tetris")
