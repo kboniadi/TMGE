@@ -132,7 +132,7 @@ class Tetris(ITileGame):
 		self.change_piece = None
 		self.current_piece = None
 		self.next_piece = None
-		self.score = None
+		self.score = Score()
 		self.fall_time = None
 		self.level_time = None
 		self.fall_speed = None
@@ -146,7 +146,7 @@ class Tetris(ITileGame):
 		self.change_piece = False
 		self.current_piece = self.get_shape()
 		self.next_piece = self.get_shape()
-		self.score = Score()
+		self.score.initialize(0, 1)
 		self.fall_time = 0
 		self.level_time = 0
 		self.fall_speed = .08
