@@ -1,127 +1,128 @@
 import random
 from src.model.itilegame import ITileGame
 from src.game.Score import Score
+import pygame
 
 # SHAPE FORMATS
 
 S = [['.....',
-      '.....',
-      '..00.',
-      '.00..',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..00.',
-      '...0.',
-      '.....']]
+	  '.....',
+	  '..00.',
+	  '.00..',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '..00.',
+	  '...0.',
+	  '.....']]
 
 Z = [['.....',
-      '.....',
-      '.00..',
-      '..00.',
-      '.....'],
-     ['.....',
-      '..0..',
-      '.00..',
-      '.0...',
-      '.....']]
+	  '.....',
+	  '.00..',
+	  '..00.',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '.00..',
+	  '.0...',
+	  '.....']]
 
 I = [['..0..',
-      '..0..',
-      '..0..',
-      '..0..',
-      '.....'],
-     ['.....',
-      '0000.',
-      '.....',
-      '.....',
-      '.....']]
+	  '..0..',
+	  '..0..',
+	  '..0..',
+	  '.....'],
+	 ['.....',
+	  '0000.',
+	  '.....',
+	  '.....',
+	  '.....']]
 
 O = [['.....',
-      '.....',
-      '.00..',
-      '.00..',
-      '.....']]
+	  '.....',
+	  '.00..',
+	  '.00..',
+	  '.....']]
 
 J = [['.....',
-      '.0...',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..00.',
-      '..0..',
-      '..0..',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '...0.',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..0..',
-      '.00..',
-      '.....']]
+	  '.0...',
+	  '.000.',
+	  '.....',
+	  '.....'],
+	 ['.....',
+	  '..00.',
+	  '..0..',
+	  '..0..',
+	  '.....'],
+	 ['.....',
+	  '.....',
+	  '.000.',
+	  '...0.',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '..0..',
+	  '.00..',
+	  '.....']]
 
 L = [['.....',
-      '...0.',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..0..',
-      '..00.',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '.0...',
-      '.....'],
-     ['.....',
-      '.00..',
-      '..0..',
-      '..0..',
-      '.....']]
+	  '...0.',
+	  '.000.',
+	  '.....',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '..0..',
+	  '..00.',
+	  '.....'],
+	 ['.....',
+	  '.....',
+	  '.000.',
+	  '.0...',
+	  '.....'],
+	 ['.....',
+	  '.00..',
+	  '..0..',
+	  '..0..',
+	  '.....']]
 
 T = [['.....',
-      '..0..',
-      '.000.',
-      '.....',
-      '.....'],
-     ['.....',
-      '..0..',
-      '..00.',
-      '..0..',
-      '.....'],
-     ['.....',
-      '.....',
-      '.000.',
-      '..0..',
-      '.....'],
-     ['.....',
-      '..0..',
-      '.00..',
-      '..0..',
-      '.....']]
+	  '..0..',
+	  '.000.',
+	  '.....',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '..00.',
+	  '..0..',
+	  '.....'],
+	 ['.....',
+	  '.....',
+	  '.000.',
+	  '..0..',
+	  '.....'],
+	 ['.....',
+	  '..0..',
+	  '.00..',
+	  '..0..',
+	  '.....']]
 
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255),
-                (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+				(255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 # index 0 - 6 represent shape
 
 
 class Piece:
-    rows = 20  # y
-    columns = 10  # x
+	rows = 20  # y
+	columns = 10  # x
 
-    def __init__(self, column, row, shape):
-        self.x = column
-        self.y = row
-        self.shape = shape
-        self.color = shape_colors[shapes.index(shape)]
-        self.rotation = 0  # number from 0-3
+	def __init__(self, column, row, shape):
+		self.x = column
+		self.y = row
+		self.shape = shape
+		self.color = shape_colors[shapes.index(shape)]
+		self.rotation = 0  # number from 0-3
 
 
 class Tetris(ITileGame):
@@ -179,7 +180,7 @@ class Tetris(ITileGame):
 					return False
 
 		return True
-    
+	
 	def convert_shape_format(self, shape):
 		positions = []
 		format = shape.shape[shape.rotation % len(shape.shape)]
@@ -238,3 +239,26 @@ class Tetris(ITileGame):
 			if y < 1:
 				return True
 		return False
+	
+	def handle_command(self, key):
+		if key == pygame.K_LEFT:
+			self.current_piece.x -= 1
+			if not self.valid_space():
+				self.current_piece.x += 1
+		elif key == pygame.K_RIGHT:
+			self.current_piece.x += 1
+			if not self.valid_space():
+				self.current_piece.x -= 1
+		elif key == pygame.K_UP:
+			# rotate shape
+			self.current_piece.rotation = self.current_piece.rotation + \
+				1 % len(self.current_piece.shape)
+			if not self.valid_space():
+				self.current_piece.rotation = self.current_piece.rotation - \
+					1 % len(self.current_piece.shape)
+
+		if key == pygame.K_DOWN:
+			# move shape down
+			self.current_piece.y += 1
+			if not self.valid_space():
+				self.current_piece.y -= 1

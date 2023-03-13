@@ -84,31 +84,13 @@ class Keyboard(IObserver):
             self.evManager.notify(StateChangeEvent(Constants.STATE_PLAY))
 
     def keydownplay(self, event):
-        if event.key == pygame.K_ESCAPE:
+        key = event.key
+        if key == pygame.K_ESCAPE:
             self.evManager.notify(StateChangeEvent(None))
-        elif event.key == pygame.K_q:
+        elif key == pygame.K_q:
             self.evManager.notify(StateChangeEvent(Constants.STATE_MENU))
-        elif event.key == pygame.K_LEFT:
-            self.game.current_piece.x -= 1
-            if not self.game.valid_space():
-                self.game.current_piece.x += 1
-        elif event.key == pygame.K_RIGHT:
-            self.game.current_piece.x += 1
-            if not self.game.valid_space():
-                self.game.current_piece.x -= 1
-        elif event.key == pygame.K_UP:
-            # rotate shape
-            self.game.current_piece.rotation = self.game.current_piece.rotation + \
-                1 % len(self.game.current_piece.shape)
-            if not self.game.valid_space():
-                self.game.current_piece.rotation = self.game.current_piece.rotation - \
-                    1 % len(self.game.current_piece.shape)
-
-        if event.key == pygame.K_DOWN:
-            # move shape down
-            self.game.current_piece.y += 1
-            if not self.game.valid_space():
-                self.game.current_piece.y -= 1
+        else:
+            self.game.handle_command(key)
     
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())
