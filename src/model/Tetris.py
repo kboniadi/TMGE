@@ -146,7 +146,6 @@ class Tetris(ITileGame):
 		self.current_piece = self.get_shape()
 		self.next_piece = self.get_shape()
 		self.score = Score()
-		self.score.initialize(0,1)
 		self.fall_time = 0
 		self.level_time = 0
 		self.fall_speed = .08
