@@ -262,3 +262,44 @@ class Tetris(ITileGame):
 			self.current_piece.y += 1
 			if not self.valid_space():
 				self.current_piece.y -= 1
+
+	def do_pre_tick(self, time):
+		self.grid = self.create_grid()
+		self.fall_time += time
+		self.level_time += time
+
+		if self.level_time/1000 > 4:
+			self.level_time = 0
+			if self.fall_speed > 0.15:
+				self.fall_speed -= 0.005
+
+		# PIECE FALLING CODE
+		if self.fall_time/1000 >= self.fall_speed:
+			self.fall_time = 0
+			self.current_piece.y += 1
+			if not (self.valid_space()) and self.current_piece.y > 0:
+				self.current_piece.y -= 1
+				self.change_piece = True
+
+	def do_post_tick(self):
+		shape_pos = self.convert_shape_format(self.current_piece)
+
+		# add piece to the grid for drawing
+		for i in range(len(shape_pos)):
+			x, y = shape_pos[i]
+			if y > -1:
+				self.grid[y][x] = self.current_piece.color
+
+		# IF PIECE HIT GROUND
+		if self.change_piece:
+			for pos in shape_pos:
+				p = (pos[0], pos[1])
+				self.locked_positions[p] = self.current_piece.color
+			self.current_piece = self.next_piece
+			self.next_piece = self.get_shape()
+			self.change_piece = False
+
+			# call four times to check for multiple clear rows
+			if self.clear_rows():
+				print("seomthing")
+				self.score += 10
