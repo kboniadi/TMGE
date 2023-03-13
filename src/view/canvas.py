@@ -3,7 +3,7 @@ import pygame
 import src.common.constants as Constants
 from src.listener.iobserver import IObserver
 from src.listener.eventmanager import EventManagerWeak, InitializeEvent, QuitEvent, StateChangeEvent, TickEvent
-from src.model.gameengine import GameEngine
+from src.model.GameEngine import GameEngine
 
 
 class Canvas(IObserver):
@@ -87,6 +87,22 @@ class Canvas(IObserver):
 
         self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
                                  2 - (label.get_width() / 2), 30))
+        
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Score: ' + str(self.model.game.score.get_score()), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT/2 - 100
+
+        self.screen.blit(label, (sx + 10, sy + 130))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Level: ' + str(self.model.game.level), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT/2 - 100
+
+        self.screen.blit(label, (sx + 10, sy + 190))
 
         for i in range(len(grid)):
             for j in range(len(grid[i])):

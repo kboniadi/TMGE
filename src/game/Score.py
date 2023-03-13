@@ -1,20 +1,28 @@
-from iTileGame import iTileGame
-from iObserver import iObserver
+from src.model.itilegame import ITileGame
+from src.listener.iobserver import IObserver
 
 
-class Score(iTileGame, iObserver):
-	def __init__(self, score, multiplier):
+class Score(ITileGame, IObserver):
+	def __init__(self):
+		self.score = None
+		self.multiplier = None
+
+	def initialize(self, score, multiplier):
 		self.score = score
 		self.multiplier = multiplier
 
-	def add_point(self):
-		pass
+	def add_point(self, points):
+		self.score = self.score + points*self.multiplier
 
 	def get_score(self):
-		pass
+		return self.score
 
 	def reset_multiplier(self):
-		pass
+		self.multiplier = 1
 
-	def increase_multiplier(self):
-		pass
+	def change_multiplier(self, level):
+		self.multiplier = level
+
+	def update(self):
+		if isinstance(event, InitializeEvent):
+			self.initialize(0,1)

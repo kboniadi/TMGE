@@ -4,7 +4,7 @@ import src.common.constants as Constants
 from src.listener.eventmanager import (EventManagerWeak, QuitEvent,
                                        StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
-from src.model.gameengine import GameEngine
+from src.model.GameEngine import GameEngine
 
 
 class Keyboard(IObserver):
@@ -68,6 +68,7 @@ class Keyboard(IObserver):
 
                 # call four times to check for multiple clear rows
                 if self.game.clear_rows():
+                    print("seomthing")
                     self.game.score += 10
             
              # Check if user lost

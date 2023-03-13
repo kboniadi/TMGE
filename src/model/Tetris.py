@@ -1,5 +1,6 @@
 import random
 from src.model.itilegame import ITileGame
+from src.game.Score import Score
 
 # SHAPE FORMATS
 
@@ -134,6 +135,8 @@ class Tetris(ITileGame):
 		self.fall_time = None
 		self.level_time = None
 		self.fall_speed = None
+		self.lines_cleared = None
+		self.level = None
 	
 	def initialize(self):
 		self.locked_positions = {}  # (x,y):(255,0,0)
@@ -142,10 +145,13 @@ class Tetris(ITileGame):
 		self.change_piece = False
 		self.current_piece = self.get_shape()
 		self.next_piece = self.get_shape()
-		self.score = 0
+		self.score = Score()
+		self.score.initialize(0,1)
 		self.fall_time = 0
 		self.level_time = 0
 		self.fall_speed = .08
+		self.lines_cleared = 0
+		self.level = 0
 	
 	def create_grid(self):
 		grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
@@ -210,6 +216,22 @@ class Tetris(ITileGame):
 				if y < ind:
 					newKey = (x, y + inc)
 					self.locked_positions[newKey] = self.locked_positions.pop(key)
+			self.lines_cleared+=inc
+			if(self.lines_cleared >= 10):
+				self.lines_cleared-=10
+				self.level += 1
+				self.score.change_multiplier(self.level)
+			match inc:
+				case 1:
+					self.score.add_point(40)
+				case 2:
+					self.score.add_point(100)
+				case 3:
+					self.score.add_point(300)
+				case 4:
+					self.score.add_point(1200)
+				case _:
+					self.score.add_point(0)
 
 	def check_lost(self):
 		for pos in self.locked_positions:

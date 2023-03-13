@@ -3,7 +3,7 @@ from src.model.user import User
 from src.model.player import Player
 from src.controller.keyboard import Keyboard
 from src.listener.eventmanager import EventManagerWeak
-from src.model.gameengine import GameEngine
+from src.model.GameEngine import GameEngine
 from src.view.canvas import Canvas
 
 
