@@ -12,6 +12,7 @@ class Score(ITileGame, IObserver):
 		self.multiplier = multiplier
 
 	def add_point(self, points):
+		print(self.score, self.multiplier, points)
 		self.score = self.score + points*self.multiplier
 
 	def get_score(self):
@@ -22,7 +23,3 @@ class Score(ITileGame, IObserver):
 
 	def change_multiplier(self, level):
 		self.multiplier = level
-
-	def update(self):
-		if isinstance(event, InitializeEvent):
-			self.initialize(0,1)
