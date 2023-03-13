@@ -1,8 +1,7 @@
 from src.model.itilegame import ITileGame
-from src.listener.iobserver import IObserver
 
 
-class Score(ITileGame, IObserver):
+class Score(ITileGame):
 	def __init__(self):
 		self.score = None
 		self.multiplier = None
@@ -22,7 +21,3 @@ class Score(ITileGame, IObserver):
 
 	def change_multiplier(self, level):
 		self.multiplier = level
-
-	def update(self):
-		if isinstance(event, InitializeEvent):
-			self.initialize(0,1)
