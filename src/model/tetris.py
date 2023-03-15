@@ -243,28 +243,29 @@ class Tetris(ITileGame):
 				return True
 		return False
 	
-	def handle_command(self, key):
-		if key == pygame.K_LEFT:
-			self.current_piece.x -= 1
-			if not self.valid_space():
-				self.current_piece.x += 1
-		elif key == pygame.K_RIGHT:
+	def handle_left(self):
+		self.current_piece.x -= 1
+		if not self.valid_space():
 			self.current_piece.x += 1
-			if not self.valid_space():
-				self.current_piece.x -= 1
-		elif key == pygame.K_UP:
-			# rotate shape
-			self.current_piece.rotation = self.current_piece.rotation + \
-				1 % len(self.current_piece.shape)
-			if not self.valid_space():
-				self.current_piece.rotation = self.current_piece.rotation - \
-					1 % len(self.current_piece.shape)
 
-		if key == pygame.K_DOWN:
-			# move shape down
-			self.current_piece.y += 1
-			if not self.valid_space():
-				self.current_piece.y -= 1
+	def handle_right(self):
+		self.current_piece.x += 1
+		if not self.valid_space():
+			self.current_piece.x -= 1
+
+	def handle_up(self):
+		# rotate shape
+		self.current_piece.rotation = self.current_piece.rotation + \
+			1 % len(self.current_piece.shape)
+		if not self.valid_space():
+			self.current_piece.rotation = self.current_piece.rotation - \
+				1 % len(self.current_piece.shape)
+
+	def handle_down(self):
+		# move shape down
+		self.current_piece.y += 1
+		if not self.valid_space():
+			self.current_piece.y -= 1
 
 	def do_pre_tick(self, time):
 		self.grid = self.create_grid()
@@ -284,7 +285,7 @@ class Tetris(ITileGame):
 				self.current_piece.y -= 1
 				self.change_piece = True
 
-	def do_post_tick(self):
+	def do_post_tick(self, _):
 		shape_pos = self.convert_shape_format(self.current_piece)
 
 		# add piece to the grid for drawing

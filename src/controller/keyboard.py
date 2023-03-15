@@ -16,7 +16,8 @@ class Keyboard(IObserver):
 
     def update(self, event):
         if isinstance(event, TickEvent):
-            self.game.do_pre_tick(self.model.clock.get_rawtime())            
+            current_time = self.model.clock.get_rawtime()
+            self.game.do_pre_tick(current_time)            
             for event in pygame.event.get():
                 # handle window manager closing our window
                 if event.type == pygame.QUIT:
@@ -33,8 +34,8 @@ class Keyboard(IObserver):
                         if currentstate == Constants.STATE_END:
                             self.keydownend(event)
         
-            self.game.do_post_tick()
-		
+            self.game.do_post_tick(current_time)
+        
             # Check if user lost
             if self.game.check_lost():
                 self.evManager.notify(StateChangeEvent(Constants.STATE_END))
@@ -53,8 +54,14 @@ class Keyboard(IObserver):
             self.evManager.notify(StateChangeEvent(None))
         elif key == pygame.K_q:
             self.evManager.notify(StateChangeEvent(Constants.STATE_MENU))
-        else:
-            self.game.handle_command(key)
+        elif key == pygame.K_LEFT:
+            self.game.handle_left()
+        elif key == pygame.K_RIGHT:
+            self.game.handle_right()
+        elif key == pygame.K_UP:
+            self.game.handle_up()
+        elif key == pygame.K_DOWN:
+            self.game.handle_down()
     
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())
