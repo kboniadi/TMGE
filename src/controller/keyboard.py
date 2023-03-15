@@ -4,7 +4,7 @@ import src.common.constants as Constants
 from src.listener.eventmanager import (EventManagerWeak, QuitEvent,
                                        StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
-from src.model.GameEngine import GameEngine
+from src.model.gameengine import GameEngine
 
 
 class Keyboard(IObserver):
