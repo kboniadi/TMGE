@@ -1,16 +1,17 @@
-import random
 import pygame
 import src.common.constants as Constants
 from src.listener.iobserver import IObserver
 from src.listener.eventmanager import EventManagerWeak, InitializeEvent, QuitEvent, StateChangeEvent, TickEvent
 from src.model.GameEngine import GameEngine
-
+from src.model.Tetris import Tetris
 
 class Canvas(IObserver):
     def __init__(self, evManager: 'EventManagerWeak', model: 'GameEngine'):
         self.evManager = evManager
         evManager.register(self)
         self.model = model
+        #Why not adding this?
+        #self.game = model.game
         self.isinitialized = False
         self.screen = None
         # self.clock = None
@@ -49,18 +50,26 @@ class Canvas(IObserver):
         pygame.display.flip()
 
     def rendergame(self):
-        self.draw_window(self.model.game.grid)
-        self.draw_next_shape(self.model.game.next_piece)
+
+        #just to keep it for now
+        # self.draw_window(self.model.game.grid)
+        #
+        # if isinstance(self.model.game, Tetris):
+        #     self.model.game.draw_next_shape(self.screen, self.model.game.next_piece)
+        #
+        # pygame.display.update()
+
+        self.model.game.render(self)
         pygame.display.update()
 
     def renderGameOver(self):
         self.draw_text_middle("You Lost", 40, (255, 255, 255))
         pygame.display.update()
-    
+
     def initialize(self):
         _ = pygame.init()
         pygame.font.init()
-        pygame.display.set_caption('Tetris')
+        pygame.display.set_caption(str(self.model.game.name))
         self.screen = pygame.display.set_mode(
             (Constants.S_WIDTH, Constants.S_HEIGHT))
         # self.clock = pygame.time.Clock()
@@ -77,8 +86,8 @@ class Canvas(IObserver):
             for j in range(col):
                 pygame.draw.line(self.screen, (128, 128, 128), (sx + j * 30, sy),
                                 (sx + j * 30, sy + Constants.PLAY_HEIGHT))  # vertical lines
-            
-    
+
+
     def draw_window(self, grid):
         self.screen.fill((0, 0, 0))
         # Tetris Title
@@ -87,7 +96,7 @@ class Canvas(IObserver):
 
         self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
                                  2 - (label.get_width() / 2), 30))
-        
+
         font = pygame.font.SysFont('comicsans', 30)
         label = font.render('Score: ' + str(self.model.game.score.get_score()), 1, (255, 255, 255))
 
@@ -113,6 +122,8 @@ class Canvas(IObserver):
         self.draw_grid(20, 10)
         pygame.draw.rect(self.screen, (255, 0, 0), (Constants.TOP_LEFT_X,
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
+
+        #draw any additional graphic
 
     def draw_next_shape(self, shape):
         font = pygame.font.SysFont('comicsans', 30)

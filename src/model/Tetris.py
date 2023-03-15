@@ -1,6 +1,7 @@
 import random
 from src.model.itilegame import ITileGame
 from src.game.Score import Score
+import src.common.constants as Constants
 import pygame
 
 # SHAPE FORMATS
@@ -138,7 +139,8 @@ class Tetris(ITileGame):
 		self.fall_speed = None
 		self.lines_cleared = None
 		self.level = None
-	
+		self.name = ""
+
 	def initialize(self):
 		self.locked_positions = {}  # (x,y):(255,0,0)
 		self.grid = self.create_grid()
@@ -152,7 +154,8 @@ class Tetris(ITileGame):
 		self.fall_speed = .08
 		self.lines_cleared = 0
 		self.level = 0
-	
+		self.name = "Tetris"
+
 	def create_grid(self):
 		grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
 
@@ -303,3 +306,24 @@ class Tetris(ITileGame):
 			if self.clear_rows():
 				print("seomthing")
 				self.score += 10
+
+	def draw_next_shape(self, screen, shape):
+		font = pygame.font.SysFont('comicsans', 30)
+		label = font.render('Next Shape', 1, (255, 255, 255))
+
+		sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+		sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+		format = shape.shape[shape.rotation % len(shape.shape)]
+
+		for i, line in enumerate(format):
+			row = list(line)
+			for j, column in enumerate(row):
+				if column == '0':
+					pygame.draw.rect(screen, shape.color,
+									 (sx + j * 30, sy + i * 30, 30, 30), 0)
+
+		screen.blit(label, (sx + 10, sy - 30))
+
+	def render(self, canvas):
+		canvas.draw_window(self.grid)
+		canvas.draw_next_shape(self.next_piece)
