@@ -3,7 +3,7 @@ import src.common.constants as Constants
 from src.listener.iobserver import IObserver
 from src.listener.eventmanager import EventManagerWeak, InitializeEvent, QuitEvent, StateChangeEvent, TickEvent
 from src.model.gameengine import GameEngine
-from src.model.Tetris import Tetris
+from src.model.tetris import Tetris
 
 class Canvas(IObserver):
     def __init__(self, evManager: 'EventManagerWeak', model: 'GameEngine'):
