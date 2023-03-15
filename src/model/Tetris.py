@@ -224,17 +224,17 @@ class Tetris(ITileGame):
 				self.lines_cleared-=10
 				self.level += 1
 				self.score.change_multiplier(self.level)
-			match inc:
-				case 1:
-					self.score.add_point(40)
-				case 2:
-					self.score.add_point(100)
-				case 3:
-					self.score.add_point(300)
-				case 4:
-					self.score.add_point(1200)
-				case _:
-					self.score.add_point(0)
+
+			if inc == 1:
+				self.score.add_point(40)
+			elif inc == 2:
+				self.score.add_point(100)
+			elif inc == 3:
+				self.score.add_point(300)
+			elif inc == 4:
+				self.score.add_point(1200)
+			else:
+				self.score.add_point(0)
 
 	def check_lost(self):
 		for pos in self.locked_positions:
