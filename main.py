@@ -1,4 +1,4 @@
-from src.model.Tetris import Tetris
+from src.model.tetris import Tetris
 from src.model.user import User
 from src.model.player import Player
 from src.controller.keyboard import Keyboard
