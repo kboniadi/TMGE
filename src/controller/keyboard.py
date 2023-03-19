@@ -1,7 +1,7 @@
 import pygame
 
 import src.common.constants as Constants
-from src.listener.eventmanager import (EventManagerWeak, QuitEvent,
+from src.listener.eventmanager import (EventManagerWeak, InitializeEvent, QuitEvent,
                                        StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.gameengine import GameEngine
@@ -17,7 +17,11 @@ class Keyboard(IObserver):
     def update(self, event):
         if isinstance(event, TickEvent):
             current_time = self.model.clock.get_rawtime()
-            self.game.do_pre_tick(current_time)            
+            currentstate = self.model.state.peek()
+
+            if currentstate == Constants.STATE_PLAY:
+                self.game.do_pre_tick(current_time)
+
             for event in pygame.event.get():
                 # handle window manager closing our window
                 if event.type == pygame.QUIT:
@@ -26,19 +30,20 @@ class Keyboard(IObserver):
                     if event.key == pygame.K_ESCAPE:
                         self.evManager.notify(StateChangeEvent(None))
                     else:
-                        currentstate = self.model.state.peek()
                         if currentstate == Constants.STATE_MENU:
                             self.keydownmenu(event)
                         if currentstate == Constants.STATE_PLAY:
                             self.keydownplay(event)
                         if currentstate == Constants.STATE_END:
                             self.keydownend(event)
-        
-            self.game.do_post_tick(current_time)
-        
+
+            if currentstate == Constants.STATE_PLAY:
+                self.game.do_post_tick(current_time)
+
             # Check if user lost
             if self.game.check_lost():
-                self.evManager.notify(StateChangeEvent(Constants.STATE_END))
+                self.evManager.notify(InitializeEvent())
+                self.evManager.notify(StateChangeEvent(None))
 
     def keydownmenu(self, event):
         # escape pops the menu
@@ -50,11 +55,7 @@ class Keyboard(IObserver):
 
     def keydownplay(self, event):
         key = event.key
-        if key == pygame.K_ESCAPE:
-            self.evManager.notify(StateChangeEvent(None))
-        elif key == pygame.K_q:
-            self.evManager.notify(StateChangeEvent(Constants.STATE_MENU))
-        elif key == pygame.K_LEFT:
+        if key == pygame.K_LEFT:
             self.game.handle_left()
         elif key == pygame.K_RIGHT:
             self.game.handle_right()
@@ -62,6 +63,6 @@ class Keyboard(IObserver):
             self.game.handle_up()
         elif key == pygame.K_DOWN:
             self.game.handle_down()
-    
+
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())
