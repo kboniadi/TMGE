@@ -4,6 +4,8 @@ from src.listener.iobserver import IObserver
 from src.listener.eventmanager import EventManagerWeak, InitializeEvent, QuitEvent, StateChangeEvent, TickEvent
 from src.model.gameengine import GameEngine
 from src.model.tetris import Tetris
+cursor = pygame.image.load('./images/selected.png')
+cursor = pygame.transform.scale(cursor, (60, 30))
 
 class Canvas(IObserver):
     def __init__(self, evManager: 'EventManagerWeak', model: 'GameEngine'):
@@ -92,7 +94,7 @@ class Canvas(IObserver):
         self.screen.fill((0, 0, 0))
         # Tetris Title
         font = pygame.font.SysFont('comicsans', 60)
-        label = font.render('TETRIS', 1, (255, 255, 255))
+        label = font.render(self.model.game.name, 1, (255, 255, 255))
 
         self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
                                  2 - (label.get_width() / 2), 30))
@@ -122,6 +124,9 @@ class Canvas(IObserver):
         self.draw_grid(20, 10)
         pygame.draw.rect(self.screen, (255, 0, 0), (Constants.TOP_LEFT_X,
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
+        
+        if(self.model.game.name == "Candy Crush"):
+            self.screen.blit(cursor, (Constants.TOP_LEFT_X + (30*self.model.game.cursor.x), Constants.TOP_LEFT_Y + (30*self.model.game.cursor.y)))
 
         #draw any additional graphic
 

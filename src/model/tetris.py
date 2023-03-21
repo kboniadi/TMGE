@@ -266,6 +266,9 @@ class Tetris(ITileGame):
 		self.current_piece.y += 1
 		if not self.valid_space():
 			self.current_piece.y -= 1
+	
+	def handle_space(self):
+		pass
 
 	def do_pre_tick(self, time):
 		self.grid = self.create_grid()

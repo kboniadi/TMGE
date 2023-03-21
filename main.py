@@ -1,4 +1,5 @@
 from src.model.tetris import Tetris
+from src.model.candycrush import CandyCrush
 from src.model.user import User
 from src.model.player import Player
 from src.controller.keyboard import Keyboard
@@ -7,9 +8,12 @@ from src.model.gameengine import GameEngine
 from src.view.canvas import Canvas
 
 
-def run():
+def run(game):
     evManager = EventManagerWeak()
-    gamemodel = GameEngine(evManager, Tetris())
+    if(game == 'tetris'):
+        gamemodel = GameEngine(evManager, Tetris())
+    if(game == 'candy_crush'):
+        gamemodel = GameEngine(evManager, CandyCrush())
     keyboard = Keyboard(evManager, gamemodel)
     graphics = Canvas(evManager, gamemodel)
     gamemodel.run()
@@ -55,9 +59,10 @@ if __name__ == '__main__':
     if selected_game == 1:
         user.selected_game = "tetris"
         # run_tetris()
-        run()
+        run(user.selected_game)
     elif selected_game == 2:
         user.selected_game = "candy_crush"
+        run(user.selected_game)
         # run_candy_crush()
 
     # run game engine

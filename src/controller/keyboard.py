@@ -63,6 +63,8 @@ class Keyboard(IObserver):
             self.game.handle_up()
         elif key == pygame.K_DOWN:
             self.game.handle_down()
+        elif key == pygame.K_SPACE:
+            self.game.handle_space()
 
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())

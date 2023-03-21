@@ -9,7 +9,7 @@ from src.model.tetris import Tetris
 
 
 class GameEngine(IObserver):
-    def __init__(self, evManager: 'EventManagerWeak', game: 'Tetris'):
+    def __init__(self, evManager: 'EventManagerWeak', game):
         self.evManager = evManager
         evManager.register(self)
         self.running = False
