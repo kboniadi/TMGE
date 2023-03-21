@@ -24,6 +24,7 @@ class Canvas(IObserver):
         self.screen = None
 
     def update(self, event):
+        print("Received event:", event)
         if isinstance(event, InitializeEvent):
             self.initialize()
         elif isinstance(event, QuitEvent):
@@ -34,13 +35,18 @@ class Canvas(IObserver):
                 return
             currentstate = self.model.state.peek()
             if currentstate == Constants.STATE_MENU:
-                self.renderer.render_menu(self.screen)
+                self.rendermenu()
             elif currentstate == Constants.STATE_PLAY:
                 self.renderer.render(self.screen)
             elif currentstate == Constants.STATE_END:
-                self.renderer.render_gameover(self.screen)
+                self.renderGameOver()
             # limit the redraw speed to 30 frames per second
             self.model.clock.tick(30)
+
+        # Event handler for key presses
+        elif event.type == pygame.KEYDOWN:
+            if self.model.state.peek() == Constants.STATE_MENU:
+                self.model.state.push(Constants.STATE_PLAY)
 
     def initialize(self):
         _ = pygame.init()
@@ -50,6 +56,15 @@ class Canvas(IObserver):
             (Constants.S_WIDTH, Constants.S_HEIGHT)
         )
         self.isinitialized = True
+
+    def rendermenu(self):
+        self.screen.fill((0, 0, 0))
+        self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+        pygame.display.flip()
+
+    def renderGameOver(self):
+        self.draw_text_middle("You Lost", 40, (255, 255, 255))
+        pygame.display.update()
 
     def draw_grid(self, row, col):
         sx = Constants.TOP_LEFT_X
