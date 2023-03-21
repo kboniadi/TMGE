@@ -37,7 +37,7 @@ class Canvas(IObserver):
             if currentstate == Constants.STATE_MENU:
                 self.rendermenu()
             elif currentstate == Constants.STATE_PLAY:
-                self.renderer.render(self.screen)
+                self.renderer.render(self.model.game)
             elif currentstate == Constants.STATE_END:
                 self.renderGameOver()
             # limit the redraw speed to 30 frames per second

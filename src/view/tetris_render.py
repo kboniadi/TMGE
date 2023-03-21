@@ -3,7 +3,7 @@ from abc import ABC
 import pygame
 from src.view.irender import iRender
 import src.common.constants as Constants
-
+from src.model.tetris import Tetris
 
 class TetrisRender(iRender, ABC):
     def __init__(self):
@@ -17,8 +17,9 @@ class TetrisRender(iRender, ABC):
     def render(self, game_model):
         print("Rendering Tetris...")
         screen = pygame.display.get_surface()
+        print(game_model)
         self.draw_window(game_model.grid, screen)
-        game_model.draw_next_shape(screen, game_model.next_piece)
+        self.draw_next_shape(game_model.next_piece, screen)
         pygame.display.update()
 
     def draw_window(self, grid, screen):
@@ -46,6 +47,23 @@ class TetrisRender(iRender, ABC):
             for j in range(10):
                 pygame.draw.line(screen, (128, 128, 128), (sx + j * 30, sy),
                                  (sx + j * 30, sy + Constants.PLAY_HEIGHT))  # vertical lines
+
+    def draw_next_shape(self, shape, screen):
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Next Shape', 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+        format = shape.shape[shape.rotation % len(shape.shape)]
+
+        for i, line in enumerate(format):
+            row = list(line)
+            for j, column in enumerate(row):
+                if column == '0':
+                    pygame.draw.rect(screen, shape.color,
+                                     (sx + j * 30, sy + i * 30, 30, 30), 0)
+
+        screen.blit(label, (sx + 10, sy - 30))
 
     # def render_menu(self, game_model):
     #     print("Rendering Tetris menu...")
