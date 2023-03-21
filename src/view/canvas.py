@@ -72,26 +72,11 @@ class Canvas(IObserver):
         pygame.display.flip()
 
     def rendermenu(self):
-        if self.model.checkmulti:
+        if self.model.checkmulti():
             player_one = self.model.user.players[0]
             player_two = self.model.user.players[1]
             if player_two.played is True:
                 self.draw_stat_screen(player_one, player_two)
-                '''
-                # print("here")
-                # self.draw_stat_screen()
-                self.screen.fill((0, 0, 0))
-                winner_text = None
-                if player_one.score > player_two.score:
-                    winner_text = 'Player 1 Wins'
-                elif player_two.score > player_one.score:
-                    winner_text = 'Player 2 Wins'
-                else:
-                    winner_text = 'It is a Tie'
-                self.draw_text_middle(f'Player 1 Score: {player_one.score}. Player 2 Score: {player_two.score}.\n{winner_text}', 40, (255, 255, 255))
-                pygame.display.flip()
-                # ## the above goes in draw_stat_scree function
-                '''
             else:
                 self.screen.fill((0, 0, 0))
                 self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
