@@ -25,13 +25,13 @@ def run(game):
     keyboard = Keyboard(evManager, gamemodel)
     graphics = Canvas(evManager, gamemodel, render_instance)
 
-    # register the render_instance with the event manager
-    evManager.register(render_instance)
-
     gamemodel.run()
-    while gamemodel.running:
-        evManager.post(TickEvent())
-        graphics.run()
+    # while gamemodel.running:
+    #     evManager.post(TickEvent())
+    #     graphics.run()
+    #
+    # # register the render_instance with the event manager
+    # evManager.register(render_instance)
 
 
 
