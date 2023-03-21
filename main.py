@@ -7,9 +7,9 @@ from src.model.gameengine import GameEngine
 from src.view.canvas import Canvas
 
 
-def run():
+def run(user):
     evManager = EventManagerWeak()
-    gamemodel = GameEngine(evManager, Tetris())
+    gamemodel = GameEngine(evManager, Tetris(), user) # GameEngine(evManager, Game, User)
     keyboard = Keyboard(evManager, gamemodel)
     graphics = Canvas(evManager, gamemodel)
     gamemodel.run()
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     if selected_game == 1:
         user.selected_game = "tetris"
         # run_tetris()
-        run()
+        run(user)
     elif selected_game == 2:
         user.selected_game = "candy_crush"
         # run_candy_crush()

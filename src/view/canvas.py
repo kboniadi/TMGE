@@ -44,13 +44,64 @@ class Canvas(IObserver):
         self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH/2 - (label.get_width() / 2),
                                  Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT/2 - label.get_height()/2))
 
-    def rendermenu(self):
-        self.screen.fill((0, 0, 0))
-        self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+    def draw_stat_screen(self, player_one, player_two):
+        font = pygame.font.SysFont('comicsans', 60)
+        label = font.render('Game Stats', 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 30))
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render("Player 1's Score: " + str(player_one.score), 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 230))
+        label = font.render("Player 2's Score: " + str(player_two.score), 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 280))
+        winner_text = 'It is a Tie!'
+        if player_one.score > player_two.score:
+            winner_text = 'Player 1 Wins!'
+        elif player_two.score > player_one.score:
+            winner_text = 'Player 2 Wins!'
+        else:
+            winner_text = 'It is a Tie!'
+        label = font.render(winner_text, 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 330))
+        label = font.render('Press ESC to quit the game.', 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 430))
         pygame.display.flip()
 
-    def rendergame(self):
+    def rendermenu(self):
+        if self.model.checkmulti:
+            player_one = self.model.user.players[0]
+            player_two = self.model.user.players[1]
+            if player_two.played is True:
+                self.draw_stat_screen(player_one, player_two)
+                '''
+                # print("here")
+                # self.draw_stat_screen()
+                self.screen.fill((0, 0, 0))
+                winner_text = None
+                if player_one.score > player_two.score:
+                    winner_text = 'Player 1 Wins'
+                elif player_two.score > player_one.score:
+                    winner_text = 'Player 2 Wins'
+                else:
+                    winner_text = 'It is a Tie'
+                self.draw_text_middle(f'Player 1 Score: {player_one.score}. Player 2 Score: {player_two.score}.\n{winner_text}', 40, (255, 255, 255))
+                pygame.display.flip()
+                # ## the above goes in draw_stat_scree function
+                '''
+            else:
+                self.screen.fill((0, 0, 0))
+                self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+                pygame.display.flip()
+        else:
+            self.screen.fill((0, 0, 0))
+            self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+            pygame.display.flip()
 
+    def rendergame(self):
         #just to keep it for now
         # self.draw_window(self.model.game.grid)
         #
@@ -123,8 +174,8 @@ class Canvas(IObserver):
         pygame.draw.rect(self.screen, (255, 0, 0), (Constants.TOP_LEFT_X,
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
 
-        #draw any additional graphic
-
+        # draw any additional graphic
+    # def render_next_state
     def draw_next_shape(self, shape):
         font = pygame.font.SysFont('comicsans', 30)
         label = font.render('Next Shape', 1, (255, 255, 255))

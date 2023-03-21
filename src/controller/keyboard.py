@@ -1,7 +1,7 @@
 import pygame
 
 import src.common.constants as Constants
-from src.listener.eventmanager import (EventManagerWeak, QuitEvent,
+from src.listener.eventmanager import (EventManagerWeak, InitializeEvent, QuitEvent,
                                        StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.gameengine import GameEngine
@@ -13,6 +13,7 @@ class Keyboard(IObserver):
         evManager.register(self)
         self.model = engine
         self.game = engine.game
+        self.is_two_player = len(engine.user.players) == 2
 
     def update(self, event):
         if isinstance(event, TickEvent):
@@ -33,12 +34,38 @@ class Keyboard(IObserver):
                             self.keydownplay(event)
                         if currentstate == Constants.STATE_END:
                             self.keydownend(event)
+                        '''
+                        if currentstate == Constants.STATE_END_MULTI: # Delete in Constants too ???
+                            self.keydownclosemulti(event)
+                        '''
         
             self.game.do_post_tick(current_time)
         
             # Check if user lost
             if self.game.check_lost():
-                self.evManager.notify(StateChangeEvent(Constants.STATE_END))
+                if self.model.checkmulti:
+                    player_one = self.model.user.players[0]
+                    player_two = self.model.user.players[1]
+                    if player_one.played is False:
+                        player_one.played = True
+                        player_one.score = self.game.score.get_score()
+                        # print(f'player 1: {player_one.score}')
+                        # self.evManager.notify(InitializeEvent())
+                        # self.evManager.notify(StateChangeEvent(None))
+                    else:
+                        player_two.played = True
+                        player_two.score = self.game.score.get_score()
+                        # print(f'player 2: {player_two.score}')
+                        # need page == print winner and player stats
+                        # need to close stats page when user hits spacebar / esc
+                        # self.evManager.notify(InitializeEvent())
+                        # self.evManager.notify(StateChangeEvent(None))
+                        # self.evManager.notify(StateChangeEvent(Constants.STATE_END_MULTI))
+                    self.evManager.notify(InitializeEvent())
+                    self.evManager.notify(StateChangeEvent(None))
+                else:
+                    self.evManager.notify(InitializeEvent())
+                    self.evManager.notify(StateChangeEvent(None))
 
     def keydownmenu(self, event):
         # escape pops the menu
@@ -65,3 +92,10 @@ class Keyboard(IObserver):
     
     def keydownend(self, event):
         self.evManager.notify(QuitEvent())
+    
+    '''
+    def keydownclosemulti(self, event):
+        self.evManager.notify(InitializeEvent())
+        # self.evManager.notify(StateChangeEvent(None))
+        # self.evManager.notify()
+    '''
