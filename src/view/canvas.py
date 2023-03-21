@@ -24,7 +24,7 @@ class Canvas(IObserver):
         self.screen = None
 
     def update(self, event):
-        print("Received event:", event)
+        #print("Received event:", event)
         if isinstance(event, InitializeEvent):
             self.initialize()
         elif isinstance(event, QuitEvent):
@@ -43,10 +43,7 @@ class Canvas(IObserver):
             # limit the redraw speed to 30 frames per second
             self.model.clock.tick(30)
 
-        # Event handler for key presses
-        elif event.type == pygame.KEYDOWN:
-            if self.model.state.peek() == Constants.STATE_MENU:
-                self.model.state.push(Constants.STATE_PLAY)
+
 
     def initialize(self):
         _ = pygame.init()
@@ -56,6 +53,13 @@ class Canvas(IObserver):
             (Constants.S_WIDTH, Constants.S_HEIGHT)
         )
         self.isinitialized = True
+
+    def draw_text_middle(self, text, size, color):
+        self.font = pygame.font.SysFont('comicsans', size, bold=True)
+        label = self.font.render(text, 1, color)
+
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2),
+                                 Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - label.get_height() / 2))
 
     def rendermenu(self):
         self.screen.fill((0, 0, 0))
