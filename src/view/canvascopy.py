@@ -130,21 +130,3 @@ class Canvas(IObserver):
             self.screen.blit(cursor, (Constants.TOP_LEFT_X + (30 * self.model.game.cursor.x),
                                       Constants.TOP_LEFT_Y + (30 * self.model.game.cursor.y)))
 
-        # draw any additional graphic
-
-    def draw_next_shape(self, shape):
-        font = pygame.font.SysFont('comicsans', 30)
-        label = font.render('Next Shape', 1, (255, 255, 255))
-
-        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
-        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
-        format = shape.shape[shape.rotation % len(shape.shape)]
-
-        for i, line in enumerate(format):
-            row = list(line)
-            for j, column in enumerate(row):
-                if column == '0':
-                    pygame.draw.rect(self.screen, shape.color,
-                                     (sx + j * 30, sy + i * 30, 30, 30), 0)
-
-        self.screen.blit(label, (sx + 10, sy - 30))

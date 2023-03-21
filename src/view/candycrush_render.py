@@ -48,3 +48,33 @@ class CandyCrushRender(iRender):
             pygame.draw.line(screen, (128, 128, 128), (sx, sy + i * 30), (sx + Constants.PLAY_WIDTH, sy + i * 30))  # horizontal lines
             for j in range(10):
                 pygame.draw.line(screen, (128, 128, 128), (sx + j * 30, sy), (sx + j * 30, sy + Constants.PLAY_HEIGHT))  # vertical lines
+
+    def render_menu(self, game_model):
+        print("Rendering CandyCrush menu...")
+        screen = pygame.display.get_surface()
+        screen.blit(self.background, (0, 0))
+
+        font = pygame.font.SysFont('comicsans', 60)
+        label = font.render("Candy Crush", 1, (255, 255, 255))
+        screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render("Press any key to start...", 1, (255, 255, 255))
+        screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 150))
+
+        pygame.display.update()
+
+    def render_gameover(self, game_model):
+        print("Rendering CandyCrush game over screen...")
+        screen = pygame.display.get_surface()
+        screen.blit(self.background, (0, 0))
+
+        font = pygame.font.SysFont('comicsans', 60)
+        label = font.render("Game Over", 1, (255, 255, 255))
+        screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+
+        # font = pygame.font.SysFont('comicsans', 30)
+        # label = font.render("Press 'p' to Play Again", 1, (255, 255, 255))
+        # screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 350))
+
+        pygame.display.update()
