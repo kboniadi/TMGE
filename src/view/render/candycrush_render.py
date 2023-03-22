@@ -1,7 +1,7 @@
 import pygame
 
 import src.common.constants as Constants
-from src.view.irender import IRender
+from src.view.render.irender import IRender
 
 
 class CandyCrushRender(IRender):

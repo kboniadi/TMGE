@@ -2,14 +2,14 @@ import pygame
 
 from src.controller.keyboard import Keyboard
 from src.listener.eventmanager import EventManagerWeak, TickEvent
-from src.model.candycrush import CandyCrush
+from src.model.game.candycrush import CandyCrush
 from src.model.gameengine import GameEngine
 from src.model.player import Player
-from src.model.tetris import Tetris
+from src.model.game.tetris import Tetris
 from src.model.user import User
-from src.view.candycrush_render import CandyCrushRender
+from src.view.render.candycrush_render import CandyCrushRender
 from src.view.canvas import Canvas
-from src.view.tetris_render import TetrisRender
+from src.view.render.tetris_render import TetrisRender
 
 
 def run(game):

@@ -5,7 +5,7 @@ from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
                                        QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.gameengine import GameEngine
-from src.view.irender import IRender
+from src.view.render.irender import IRender
 
 
 class Canvas(IObserver):

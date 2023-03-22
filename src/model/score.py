@@ -1,4 +1,4 @@
-from src.model.itilegame import ITileGame
+from src.model.game.itilegame import ITileGame
 
 
 class Score(ITileGame):

@@ -4,7 +4,7 @@ import src.common.constants as Constants
 from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
                                        QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
-from src.model.itilegame import ITileGame
+from src.model.game.itilegame import ITileGame
 
 
 
