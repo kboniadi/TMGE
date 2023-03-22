@@ -155,6 +155,9 @@ class Tetris(ITileGame):
 		self.lines_cleared = 0
 		self.level = 0
 		self.name = "Tetris"
+  
+	def get_name(self):
+		return self.name
 
 	def create_grid(self):
 		grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]

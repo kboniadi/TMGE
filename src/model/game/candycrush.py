@@ -27,6 +27,9 @@ class CandyCrush(ITileGame):
 		self.level = 10
 		self.cursor = Cursor(0,0)
 		self.swap = False
+  
+	def get_name(self):
+		return self.name
 
 	def create_grid(self):
 		grid = [[self.random_piece() for x in range(10)] for x in range(20)]
