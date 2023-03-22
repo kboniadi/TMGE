@@ -97,8 +97,6 @@ class CandyCrush(ITileGame):
 			self.grid[row][x] = self.grid[row-1][x]
 		self.grid[0][x] = (0,0,0)
 
-	def render(self, canvas):
-		canvas.draw_window(self.grid)
 
 	def add_new_tiles(self):
 		for x in range(10):
