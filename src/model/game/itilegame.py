@@ -37,3 +37,6 @@ class ITileGame(ABC):
 
 	def handle_down(self):
 		pass
+
+	def handle_space(self):
+		pass

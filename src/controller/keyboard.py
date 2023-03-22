@@ -1,8 +1,8 @@
 import pygame
 
 import src.common.constants as Constants
-from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
-                                       QuitEvent, StateChangeEvent, TickEvent)
+from src.listener.eventmanager import (EventManagerWeak, InitializeEvent, QuitEvent,
+                                       StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.gameengine import GameEngine
 
@@ -13,6 +13,7 @@ class Keyboard(IObserver):
         evManager.register(self)
         self.model = engine
         self.game = engine.game
+        self.is_two_player = len(engine.user.players) == 2
 
     def update(self, event):
         if isinstance(event, TickEvent):
@@ -36,14 +37,26 @@ class Keyboard(IObserver):
                             self.keydownplay(event)
                         if currentstate == Constants.STATE_END:
                             self.keydownend(event)
-
+                            
             if currentstate == Constants.STATE_PLAY:
                 self.game.do_post_tick(current_time)
 
             # Check if user lost
             if self.game.check_lost():
-                self.evManager.notify(InitializeEvent())
-                self.evManager.notify(StateChangeEvent(None))
+                if self.model.checkmulti():
+                    player_one = self.model.user.players[0]
+                    player_two = self.model.user.players[1]
+                    if player_one.played is False:
+                        player_one.played = True
+                        player_one.score = self.game.score.get_score()
+                    else:
+                        player_two.played = True
+                        player_two.score = self.game.score.get_score()
+                    self.evManager.notify(InitializeEvent())
+                    self.evManager.notify(StateChangeEvent(None))
+                else:
+                    self.evManager.notify(InitializeEvent())
+                    self.evManager.notify(StateChangeEvent(None))
 
     def keydownmenu(self, event):
         # escape pops the menu

@@ -12,13 +12,13 @@ from src.view.canvas import Canvas
 from src.view.render.tetris_render import TetrisRender
 
 
-def run(game):
+def run(user):
     evManager = EventManagerWeak()
-    if game == 'tetris':
-        gamemodel = GameEngine(evManager, Tetris())
+    if user.selected_game == 'tetris':
+        gamemodel = GameEngine(evManager, Tetris(), user)
         render_instance = TetrisRender()
-    elif game == 'candy_crush':
-        gamemodel = GameEngine(evManager, CandyCrush())
+    elif user.selected_game == 'candy_crush':
+        gamemodel = GameEngine(evManager, CandyCrush(), user)
         render_instance = CandyCrushRender()
     else:
         raise ValueError("Invalid game selected.")
@@ -73,7 +73,7 @@ if __name__ == '__main__':
         selected_game = int(input())
     if selected_game == 1:
         user.selected_game = "tetris"
-        run(user.selected_game)
+        run(user)
     elif selected_game == 2:
         user.selected_game = "candy_crush"
-        run(user.selected_game)
+        run(user)
