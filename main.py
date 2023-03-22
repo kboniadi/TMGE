@@ -1,18 +1,38 @@
+import pygame
+
 from src.model.tetris import Tetris
+from src.model.candycrush import CandyCrush
 from src.model.user import User
 from src.model.player import Player
 from src.controller.keyboard import Keyboard
-from src.listener.eventmanager import EventManagerWeak
+from src.listener.eventmanager import EventManagerWeak, TickEvent
 from src.model.gameengine import GameEngine
 from src.view.canvas import Canvas
+from src.view.tetris_render import TetrisRender
+from src.view.candycrush_render import CandyCrushRender
 
 
-def run():
+def run(game):
     evManager = EventManagerWeak()
-    gamemodel = GameEngine(evManager, Tetris())
+    if game == 'tetris':
+        gamemodel = GameEngine(evManager, Tetris())
+        render_instance = TetrisRender()
+    elif game == 'candy_crush':
+        gamemodel = GameEngine(evManager, CandyCrush())
+        render_instance = CandyCrushRender()
+    else:
+        raise ValueError("Invalid game selected.")
     keyboard = Keyboard(evManager, gamemodel)
-    graphics = Canvas(evManager, gamemodel)
+    graphics = Canvas(evManager, gamemodel, render_instance)
+
     gamemodel.run()
+    # while gamemodel.running:
+    #     evManager.post(TickEvent())
+    #     graphics.run()
+    #
+    # # register the render_instance with the event manager
+    # evManager.register(render_instance)
+
 
 
 if __name__ == '__main__':
@@ -54,11 +74,7 @@ if __name__ == '__main__':
         selected_game = int(input())
     if selected_game == 1:
         user.selected_game = "tetris"
-        # run_tetris()
-        run()
+        run(user.selected_game)
     elif selected_game == 2:
         user.selected_game = "candy_crush"
-        # run_candy_crush()
-
-    # run game engine
-    # run()
+        run(user.selected_game)
