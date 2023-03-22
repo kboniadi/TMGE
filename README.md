@@ -1,7 +1,7 @@
 # Final Project - INF122 - Group 9
 An extensible Tile-Matching Game Environment (TMGE) including Tetris and Candy Crush.
 ***
-### Setup Instructions:
+## Setup Instructions:
 1) Download a local copy of our repo.
 2) Open a terminal and change the path to folder's location 
 ```bash
@@ -17,7 +17,7 @@ An extensible Tile-Matching Game Environment (TMGE) including Tetris and Candy C
   python main.py
 ```
 ***
-### Authors: 
+## Authors: 
 - Kord A. Boniadi
 - Vincent Lee Cheng
 - David S. Detweiler
