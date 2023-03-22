@@ -19,6 +19,7 @@ class CandyCrush(ITileGame):
 		self.level = 0
 		self.cursor = Cursor(0,0)
 		self.swap = False
+		self.levelCount = 1
 	
 	def initialize(self):
 		self.grid = self.create_grid()
@@ -40,9 +41,10 @@ class CandyCrush(ITileGame):
 	
 	def check_lost(self):
 		if self.level == 0:
-			if self.score.score < 1000:
+			if self.score.score < (1000*self.levelCount):
 				return True
 			else:
+				self.levelCount += 1
 				self.level = 10
 		return False
 	
