@@ -12,10 +12,10 @@ class CandyCrushRender(iRender):
         self.cursor = None
 
     def render(self, game_model):
-        print("Rendering Candy Crush...")
+        # print("Rendering Candy Crush...")
         if not self.isinitialized:
             self.initialize()
-        self.draw_window(game_model.grid, game_model.cursor, self.screen)
+        self.draw_window(game_model.grid, game_model.cursor, self.screen, game_model.score.get_score(), game_model.level)
         pygame.display.update()
 
     def initialize(self):
@@ -27,11 +27,27 @@ class CandyCrushRender(iRender):
         self.cursor = pygame.transform.scale(self.cursor, (60, 30))
         self.isinitialized = True
 
-    def draw_window(self, grid, cursor, screen):
+    def draw_window(self, grid, cursor, screen, score, level):
         screen.fill((0, 0, 0))
-        font = pygame.font.SysFont('comicsans', 60)
+        font = pygame.font.SysFont('comicsans', 55)
         label = font.render("Candy Crush", 1, (255, 255, 255))
         screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Score: ' + str(score), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+
+        screen.blit(label, (sx + 10, sy + 130))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Level: ' + str(level), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+
+        screen.blit(label, (sx + 10, sy + 190))
 
         for i in range(len(grid)):
             for j in range(len(grid[i])):

@@ -15,19 +15,35 @@ class TetrisRender(iRender, ABC):
         self.background.fill((0, 0, 0))
 
     def render(self, game_model):
-        print("Rendering Tetris...")
+        # print("Rendering Tetris...")
         screen = pygame.display.get_surface()
-        print(game_model)
-        self.draw_window(game_model.grid, screen)
+        # print(game_model)
+        self.draw_window(game_model.grid, screen, game_model.score.get_score(), game_model.level)
         self.draw_next_shape(game_model.next_piece, screen)
         pygame.display.update()
 
-    def draw_window(self, grid, screen):
+    def draw_window(self, grid, screen, score, level):
         screen.blit(self.background, (0, 0))
 
-        font = pygame.font.SysFont('comicsans', 60)
+        font = pygame.font.SysFont('comicsans', 55)
         label = font.render("Tetris", 1, (255, 255, 255))
         screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Score: ' + str(score), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+
+        screen.blit(label, (sx + 10, sy + 130))
+
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render('Level: ' + str(level), 1, (255, 255, 255))
+
+        sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
+        sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
+
+        screen.blit(label, (sx + 10, sy + 190))
 
         for i in range(len(grid)):
             for j in range(len(grid[i])):
@@ -65,32 +81,3 @@ class TetrisRender(iRender, ABC):
 
         screen.blit(label, (sx + 10, sy - 30))
 
-    # def render_menu(self, game_model):
-    #     print("Rendering Tetris menu...")
-    #     screen = pygame.display.get_surface()
-    #     screen.blit(self.background, (0, 0))
-    #
-    #     font = pygame.font.SysFont('comicsans', 60)
-    #     label = font.render("Tetris", 1, (255, 255, 255))
-    #     screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
-    #
-    #     font = pygame.font.SysFont('comicsans', 30)
-    #     label = font.render("Press any key to start...", 1, (255, 255, 255))
-    #     screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 150))
-    #
-    #     pygame.display.update()
-    #
-    # def render_gameover(self, game_model):
-    #     print("Rendering Tetris game over screen...")
-    #     screen = pygame.display.get_surface()
-    #     screen.blit(self.background, (0, 0))
-    #
-    #     font = pygame.font.SysFont('comicsans', 60)
-    #     label = font.render("Game Over", 1, (255, 255, 255))
-    #     screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
-    #
-    #     # font = pygame.font.SysFont('comicsans', 30)
-    #     # label = font.render("Press 'p' to Play Again", 1, (255, 255, 255))
-    #     # screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 350))
-    #
-    #     pygame.display.update()
