@@ -48,10 +48,10 @@ class Keyboard(IObserver):
                     player_two = self.model.user.players[1]
                     if player_one.played is False:
                         player_one.played = True
-                        player_one.score = self.game.score.get_score()
+                        player_one.score = self.game.get_score().get_score()
                     else:
                         player_two.played = True
-                        player_two.score = self.game.score.get_score()
+                        player_two.score = self.game.get_score().get_score()
                     self.evManager.notify(InitializeEvent())
                     self.evManager.notify(StateChangeEvent(None))
                 else:

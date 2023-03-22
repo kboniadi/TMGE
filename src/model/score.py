@@ -1,7 +1,4 @@
-from src.model.game.itilegame import ITileGame
-
-
-class Score(ITileGame):
+class Score:
 	def __init__(self):
 		self.score = 0
 		self.multiplier = 0
