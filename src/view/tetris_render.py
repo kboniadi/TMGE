@@ -1,29 +1,37 @@
-from abc import ABC
-
 import pygame
 from src.view.irender import iRender
 import src.common.constants as Constants
-from src.model.tetris import Tetris
 
-class TetrisRender(iRender, ABC):
+
+
+class TetrisRender(iRender):
     def __init__(self):
-        pygame.init()
-        self.window = pygame.display.set_mode((Constants.S_WIDTH, Constants.S_HEIGHT))
-        pygame.display.set_caption("Tile Games - Tetris")
-
-        self.background = pygame.Surface((Constants.S_WIDTH, Constants.S_HEIGHT))
-        self.background.fill((0, 0, 0))
+        self.isinitialized = False
+        self.screen = None
+        # self.font = None
+        # self.background = pygame.Surface((Constants.S_WIDTH, Constants.S_HEIGHT))
+        # self.background.fill((0, 0, 0))
 
     def render(self, game_model):
         # print("Rendering Tetris...")
-        screen = pygame.display.get_surface()
+        # screen = pygame.display.get_surface()
         # print(game_model)
-        self.draw_window(game_model.grid, screen, game_model.score.get_score(), game_model.level)
-        self.draw_next_shape(game_model.next_piece, screen)
+        if not self.isinitialized:
+            self.initialize()
+        self.draw_window(game_model.grid, self.screen, game_model.score.get_score(), game_model.level)
+        self.draw_next_shape(game_model.next_piece, self.screen)
         pygame.display.update()
 
+    def initialize(self, screen):
+        pygame.font.init()
+        # pygame.display.set_caption("Tile Games - Tetris")
+        self.screen = screen
+        self.font = pygame.font.SysFont('comicsans', 60, bold=True)
+        self.isinitialized = True
+
     def draw_window(self, grid, screen, score, level):
-        screen.blit(self.background, (0, 0))
+        screen.fill((0, 0, 0))
+        # screen.blit(self.background, (0, 0))
 
         font = pygame.font.SysFont('comicsans', 55)
         label = font.render("Tetris", 1, (255, 255, 255))
@@ -80,4 +88,3 @@ class TetrisRender(iRender, ABC):
                                      (sx + j * 30, sy + i * 30, 30, 30), 0)
 
         screen.blit(label, (sx + 10, sy - 30))
-
