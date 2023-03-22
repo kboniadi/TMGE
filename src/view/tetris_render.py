@@ -1,24 +1,26 @@
-from abc import ABC
-
 import pygame
-from src.view.irender import iRender
-import src.common.constants as Constants
-from src.model.tetris import Tetris
 
-class TetrisRender(iRender, ABC):
+import src.common.constants as Constants
+from src.view.irender import IRender
+
+
+class TetrisRender(IRender):
     def __init__(self):
         pygame.init()
-        self.window = pygame.display.set_mode((Constants.S_WIDTH, Constants.S_HEIGHT))
+        self.window = pygame.display.set_mode(
+            (Constants.S_WIDTH, Constants.S_HEIGHT))
         pygame.display.set_caption("Tile Games - Tetris")
 
-        self.background = pygame.Surface((Constants.S_WIDTH, Constants.S_HEIGHT))
+        self.background = pygame.Surface(
+            (Constants.S_WIDTH, Constants.S_HEIGHT))
         self.background.fill((0, 0, 0))
 
     def render(self, game_model):
         # print("Rendering Tetris...")
         screen = pygame.display.get_surface()
         # print(game_model)
-        self.draw_window(game_model.grid, screen, game_model.score.get_score(), game_model.level)
+        self.draw_window(game_model.grid, screen,
+                         game_model.score.get_score(), game_model.level)
         self.draw_next_shape(game_model.next_piece, screen)
         pygame.display.update()
 
@@ -27,7 +29,8 @@ class TetrisRender(iRender, ABC):
 
         font = pygame.font.SysFont('comicsans', 55)
         label = font.render("Tetris", 1, (255, 255, 255))
-        screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+        screen.blit(label, (Constants.TOP_LEFT_X +
+                    Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
 
         font = pygame.font.SysFont('comicsans', 30)
         label = font.render('Score: ' + str(score), 1, (255, 255, 255))
@@ -80,4 +83,3 @@ class TetrisRender(iRender, ABC):
                                      (sx + j * 30, sy + i * 30, 30, 30), 0)
 
         screen.blit(label, (sx + 10, sy - 30))
-

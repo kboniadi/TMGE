@@ -4,11 +4,12 @@ import src.common.constants as Constants
 from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
                                        QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
+from src.model.itilegame import ITileGame
 
 
 
 class GameEngine(IObserver):
-    def __init__(self, evManager: 'EventManagerWeak', game):
+    def __init__(self, evManager: 'EventManagerWeak', game: 'ITileGame'):
         self.evManager = evManager
         evManager.register(self)
         self.running = False

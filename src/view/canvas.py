@@ -1,20 +1,16 @@
 import pygame
+
 import src.common.constants as Constants
+from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
+                                       QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
-from src.listener.eventmanager import (
-    EventManagerWeak,
-    InitializeEvent,
-    QuitEvent,
-    StateChangeEvent,
-    TickEvent,
-)
 from src.model.gameengine import GameEngine
-from src.view.irender import iRender
+from src.view.irender import IRender
 
 
 class Canvas(IObserver):
     def __init__(
-        self, evManager: "EventManagerWeak", model: "GameEngine", renderer: "iRender"
+        self, evManager: 'EventManagerWeak', model: 'GameEngine', renderer: 'IRender'
     ):
         self.evManager = evManager
         evManager.register(self)
@@ -24,7 +20,7 @@ class Canvas(IObserver):
         self.screen = None
 
     def update(self, event):
-        #print("Received event:", event)
+        # print("Received event:", event)
         if isinstance(event, InitializeEvent):
             self.initialize()
         elif isinstance(event, QuitEvent):
@@ -42,8 +38,6 @@ class Canvas(IObserver):
                 self.renderGameOver()
             # limit the redraw speed to 30 frames per second
             self.model.clock.tick(30)
-
-
 
     def initialize(self):
         _ = pygame.init()
@@ -98,7 +92,8 @@ class Canvas(IObserver):
                                  2 - (label.get_width() / 2), 30))
 
         font = pygame.font.SysFont('comicsans', 30)
-        label = font.render('Score: ' + str(self.model.game.score.get_score()), 1, (255, 255, 255))
+        label = font.render(
+            'Score: ' + str(self.model.game.score.get_score()), 1, (255, 255, 255))
 
         sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
         sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT/2 - 100
@@ -106,7 +101,8 @@ class Canvas(IObserver):
         self.screen.blit(label, (sx + 10, sy + 130))
 
         font = pygame.font.SysFont('comicsans', 30)
-        label = font.render('Level: ' + str(self.model.game.level), 1, (255, 255, 255))
+        label = font.render(
+            'Level: ' + str(self.model.game.level), 1, (255, 255, 255))
 
         sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
         sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT/2 - 100
@@ -122,4 +118,3 @@ class Canvas(IObserver):
         self.draw_grid(20, 10)
         pygame.draw.rect(self.screen, (255, 0, 0), (Constants.TOP_LEFT_X,
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
-

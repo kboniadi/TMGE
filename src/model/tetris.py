@@ -1,6 +1,6 @@
 import random
 from src.model.itilegame import ITileGame
-from src.game.Score import Score
+from src.model.score import Score
 import src.common.constants as Constants
 import pygame
 

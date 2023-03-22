@@ -1,8 +1,8 @@
 import pygame
 
 import src.common.constants as Constants
-from src.listener.eventmanager import (EventManagerWeak, InitializeEvent, QuitEvent,
-                                       StateChangeEvent, TickEvent)
+from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
+                                       QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.gameengine import GameEngine
 
