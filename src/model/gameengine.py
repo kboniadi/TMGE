@@ -5,17 +5,17 @@ from src.listener.eventmanager import (EventManagerWeak, InitializeEvent,
                                        QuitEvent, StateChangeEvent, TickEvent)
 from src.listener.iobserver import IObserver
 from src.model.game.itilegame import ITileGame
-
-
+from src.model.user import User
 
 class GameEngine(IObserver):
-    def __init__(self, evManager: 'EventManagerWeak', game: 'ITileGame'):
+    def __init__(self, evManager: 'EventManagerWeak', game: 'ITileGame', user: 'User'):
         self.evManager = evManager
         evManager.register(self)
         self.running = False
         self.state = StateMachine()
         self.game = game
         self.clock = pygame.time.Clock()
+        self.user = user
 
     def update(self, event):
         if isinstance(event, QuitEvent):
@@ -38,6 +38,9 @@ class GameEngine(IObserver):
         self.state.push(Constants.STATE_MENU)
         while self.running:
             self.evManager.notify(TickEvent())
+
+    def checkmulti(self):
+        return len(self.user.players) == 2
 
 
 class StateMachine:

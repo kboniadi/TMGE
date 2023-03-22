@@ -3,8 +3,8 @@ from src.model.game.itilegame import ITileGame
 
 class Score(ITileGame):
 	def __init__(self):
-		self.score = None
-		self.multiplier = None
+		self.score = 0
+		self.multiplier = 0
 
 	def initialize(self, score, multiplier):
 		self.score = score

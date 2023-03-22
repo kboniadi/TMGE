@@ -42,7 +42,7 @@ class Canvas(IObserver):
     def initialize(self):
         _ = pygame.init()
         pygame.font.init()
-        pygame.display.set_caption(str(self.model.game.name))
+        pygame.display.set_caption(str(self.model.game.get_name()))
         self.screen = pygame.display.set_mode(
             (Constants.S_WIDTH, Constants.S_HEIGHT)
         )
@@ -55,10 +55,59 @@ class Canvas(IObserver):
         self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2),
                                  Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - label.get_height() / 2))
 
-    def rendermenu(self):
-        self.screen.fill((0, 0, 0))
-        self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+    def draw_stat_screen(self, player_one, player_two):
+        font = pygame.font.SysFont('comicsans', 60)
+        label = font.render('Game Stats', 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 30))
+        font = pygame.font.SysFont('comicsans', 30)
+        label = font.render("Player 1's Score: " + str(player_one.score), 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 230))
+        label = font.render("Player 2's Score: " + str(player_two.score), 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 280))
+        winner_text = 'It is a Tie!'
+        if player_one.score > player_two.score:
+            winner_text = 'Player 1 Wins!'
+        elif player_two.score > player_one.score:
+            winner_text = 'Player 2 Wins!'
+        else:
+            winner_text = 'It is a Tie!'
+        label = font.render(winner_text, 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 330))
+        label = font.render('Press ESC to quit the game.', 1, (255, 255, 255))
+        self.screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH /
+                                 2 - (label.get_width() / 2), 430))
         pygame.display.flip()
+
+    def rendermenu(self):
+        if self.model.checkmulti():
+            player_one = self.model.user.players[0]
+            player_two = self.model.user.players[1]
+            if player_two.played is True:
+                self.draw_stat_screen(player_one, player_two)
+            else:
+                self.screen.fill((0, 0, 0))
+                self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+                pygame.display.flip()
+        else:
+            self.screen.fill((0, 0, 0))
+            self.draw_text_middle('Press space key to begin.', 60, (255, 255, 255))
+            pygame.display.flip()
+
+    def rendergame(self):
+        #just to keep it for now
+        # self.draw_window(self.model.game.grid)
+        #
+        # if isinstance(self.model.game, Tetris):
+        #     self.model.game.draw_next_shape(self.screen, self.model.game.next_piece)
+        #
+        # pygame.display.update()
+
+        self.model.game.render(self)
+        pygame.display.update()
 
     def renderGameOver(self):
         self.draw_text_middle("You Lost", 40, (255, 255, 255))
@@ -118,3 +167,5 @@ class Canvas(IObserver):
         self.draw_grid(20, 10)
         pygame.draw.rect(self.screen, (255, 0, 0), (Constants.TOP_LEFT_X,
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
+
+        # draw any additional graphic
