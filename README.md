@@ -1,4 +1,4 @@
-# FinalProject INF122 by Group 9
+# Final Project - INF122 - Group 9
 An extensible Tile-Matching Game Environment (TMGE) including Tetris and Candy Crush.
 ***
 ### Setup Instructions:
