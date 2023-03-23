@@ -5,7 +5,7 @@ An extensible Tile-Matching Game Environment (TMGE) including Tetris and Candy C
 1) Download a local copy of our repo.
 2) Open a terminal and change the path to folder's location 
 ```bash
-  cd TMGE-INF122
+  cd TMGE
 ```
 3) Now, you will have to install Python's pip & virtual environment. Moreover, you will have to create and activate a virtual environment. The following link provides detailed instructions for doing the aforementioned: <br>[Installation and Setup Instructions for Python's Pip & Virtual Environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment). 
 4) After creating and activating your virtual environment, run the following command in your terminal to install the required dependencies:
