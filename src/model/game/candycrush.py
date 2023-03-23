@@ -100,6 +100,10 @@ class CandyCrush(ITileGame):
             self.check_matches()
             self.check_gaps()
             self.add_new_tiles()
+    
+
+    def do_post_tick(self, time):
+        pass
 
     def check_matches(self):
         for y in range(20):
@@ -133,9 +137,3 @@ class CandyCrush(ITileGame):
         for x in range(10):
             if self.grid[0][x] is (0, 0, 0):
                 self.grid[0][x] = random.choice(piece_color)
-
-    def do_pre_tick(self, time):
-        pass
-
-    def do_post_tick(self, time):
-        pass
