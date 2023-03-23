@@ -41,11 +41,13 @@ class Canvas(IObserver):
 
     def initialize(self):
         _ = pygame.init()
+
         pygame.font.init()
         pygame.display.set_caption(str(self.model.game.get_name()))
         self.screen = pygame.display.set_mode(
             (Constants.S_WIDTH, Constants.S_HEIGHT)
         )
+        self.renderer.initialize(self.screen)
         self.isinitialized = True
 
     def draw_text_middle(self, text, size, color):
@@ -113,6 +115,8 @@ class Canvas(IObserver):
         self.draw_text_middle("You Lost", 40, (255, 255, 255))
         pygame.display.update()
 
+<<<<<<< HEAD
+=======
     def draw_grid(self, row, col):
         sx = Constants.TOP_LEFT_X
         sy = Constants.TOP_LEFT_Y
@@ -169,3 +173,4 @@ class Canvas(IObserver):
                                                     Constants.TOP_LEFT_Y, Constants.PLAY_WIDTH, Constants.PLAY_HEIGHT), 5)
 
         # draw any additional graphic
+>>>>>>> main

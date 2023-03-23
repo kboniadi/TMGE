@@ -28,7 +28,7 @@ class CandyCrush(ITileGame):
 		self.level = 10
 		self.cursor = Cursor(0,0)
 		self.swap = False
-  
+
 	def get_name(self):
 		return self.name
 

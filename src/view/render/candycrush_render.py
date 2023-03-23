@@ -6,29 +6,20 @@ from src.view.render.irender import IRender
 
 class CandyCrushRender(IRender):
     def __init__(self):
-        pygame.init()
-        self.isinitialized = False
         self.screen = None
-        self.font = None
         self.cursor = None
 
     def render(self, game_model):
         # print("Rendering Candy Crush...")
-        if not self.isinitialized:
-            self.initialize()
         self.draw_window(game_model.grid, game_model.cursor, self.screen,
                          game_model.score.get_score(), game_model.level)
         pygame.display.update()
 
-    def initialize(self):
+    def initialize(self, screen):
         pygame.font.init()
-        pygame.display.set_caption("Tile Games - Candy Crush")
-        self.screen = pygame.display.set_mode(
-            (Constants.S_WIDTH, Constants.S_HEIGHT))
-        self.font = pygame.font.SysFont('comicsans', 60, bold=True)
-        self.cursor = pygame.image.load('./assets/images/selected.png')
-        self.cursor = pygame.transform.scale(self.cursor, (30, 30))
-        self.isinitialized = True
+        self.screen = screen
+        self.cursor = pygame.image.load('./images/selected.png')
+        self.cursor = pygame.transform.scale(self.cursor, (60, 30))
 
     def draw_window(self, grid, cursor, screen, score, level):
         screen.fill((0, 0, 0))
