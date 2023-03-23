@@ -91,14 +91,18 @@ class Canvas(IObserver):
             if player_two.played is True:
                 self.draw_stat_screen(player_one, player_two)
             else:
-                self.screen.fill((0, 0, 0))
-                self.draw_text_middle('Player 2 - Press space key to begin.', 50, (255, 255, 255))
-                pygame.display.flip()
+                if player_one.played is False:
+                    self.screen.fill((0, 0, 0))
+                    self.draw_text_middle('Player 1 - Press space key to begin.', 30, (255, 255, 255))
+                    pygame.display.flip()
+                else:
+                    self.screen.fill((0, 0, 0))
+                    self.draw_text_middle('Player 2 - Press space key to begin.', 30, (255, 255, 255))
+                    pygame.display.flip()
         else:
             self.screen.fill((0, 0, 0))
-            self.draw_text_middle('Player 1 - Press space key to begin.', 50, (255, 255, 255))
+            self.draw_text_middle('Player 1 - Press space key to begin.', 30, (255, 255, 255))
             pygame.display.flip()
-
     def renderGameOver(self):
         self.draw_text_middle("You Lost", 40, (255, 255, 255))
         pygame.display.update()
