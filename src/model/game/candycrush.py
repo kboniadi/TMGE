@@ -43,7 +43,7 @@ class CandyCrush(ITileGame):
 
     def check_lost(self):
         if self.level == 0:
-            if self.score.score < (1000*self.levelCount):
+            if self.score.score < (300*self.levelCount):
                 return True
             else:
                 self.levelCount += 1

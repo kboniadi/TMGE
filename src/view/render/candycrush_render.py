@@ -19,7 +19,7 @@ class CandyCrushRender(IRender):
         pygame.font.init()
         self.screen = screen
         self.cursor = pygame.image.load('./assets/images/selected.png')
-        self.cursor = pygame.transform.scale(self.cursor, (60, 30))
+        self.cursor = pygame.transform.scale(self.cursor, (30, 30))
 
     def draw_window(self, grid, cursor, screen, score, level):
         screen.fill((0, 0, 0))
@@ -37,7 +37,7 @@ class CandyCrushRender(IRender):
         screen.blit(label, (sx + 10, sy + 130))
 
         font = pygame.font.SysFont('comicsans', 30)
-        label = font.render('Level: ' + str(level), 1, (255, 255, 255))
+        label = font.render('Moves: ' + str(level), 1, (255, 255, 255))
 
         sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
         sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
