@@ -1,34 +1,26 @@
 import pygame
 
 import src.common.constants as Constants
+from src.model.game.itilegame import ITileGame
 from src.view.render.irender import IRender
 
 
 class CandyCrushRender(IRender):
     def __init__(self):
-        pygame.init()
-        self.isinitialized = False
         self.screen = None
-        self.font = None
         self.cursor = None
 
     def render(self, game_model):
         # print("Rendering Candy Crush...")
-        if not self.isinitialized:
-            self.initialize()
         self.draw_window(game_model.grid, game_model.cursor, self.screen,
                          game_model.score.get_score(), game_model.level)
         pygame.display.update()
 
-    def initialize(self):
+    def initialize(self, screen):
         pygame.font.init()
-        pygame.display.set_caption("Tile Games - Candy Crush")
-        self.screen = pygame.display.set_mode(
-            (Constants.S_WIDTH, Constants.S_HEIGHT))
-        self.font = pygame.font.SysFont('comicsans', 60, bold=True)
+        self.screen = screen
         self.cursor = pygame.image.load('./assets/images/selected.png')
         self.cursor = pygame.transform.scale(self.cursor, (30, 30))
-        self.isinitialized = True
 
     def draw_window(self, grid, cursor, screen, score, level):
         screen.fill((0, 0, 0))
@@ -46,7 +38,7 @@ class CandyCrushRender(IRender):
         screen.blit(label, (sx + 10, sy + 130))
 
         font = pygame.font.SysFont('comicsans', 30)
-        label = font.render('Level: ' + str(level), 1, (255, 255, 255))
+        label = font.render('Moves: ' + str(level), 1, (255, 255, 255))
 
         sx = Constants.TOP_LEFT_X + Constants.PLAY_WIDTH + 50
         sy = Constants.TOP_LEFT_Y + Constants.PLAY_HEIGHT / 2 - 100
