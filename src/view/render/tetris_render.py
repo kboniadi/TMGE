@@ -6,16 +6,9 @@ import src.common.constants as Constants
 
 class TetrisRender(IRender):
     def __init__(self):
-        self.isinitialized = False
         self.screen = None
-        # self.font = None
-        # self.background = pygame.Surface((Constants.S_WIDTH, Constants.S_HEIGHT))
-        # self.background.fill((0, 0, 0))
 
     def render(self, game_model):
-        # print("Rendering Tetris...")
-        # screen = pygame.display.get_surface()
-        # print(game_model)
         self.draw_window(game_model.grid, self.screen, game_model.score.get_score(), game_model.level)
         self.draw_next_shape(game_model.next_piece, self.screen)
         pygame.display.update()
@@ -25,7 +18,6 @@ class TetrisRender(IRender):
         # pygame.display.set_caption("Tile Games - Tetris")
         self.screen = screen
         self.font = pygame.font.SysFont('comicsans', 60, bold=True)
-        self.isinitialized = True
 
     def draw_window(self, grid, screen, score, level):
         screen.fill((0, 0, 0))
