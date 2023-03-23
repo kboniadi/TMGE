@@ -1,6 +1,7 @@
 import pygame
 
 import src.common.constants as Constants
+from src.model.game.itilegame import ITileGame
 from src.view.render.irender import IRender
 
 
