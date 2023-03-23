@@ -137,3 +137,6 @@ class CandyCrush(ITileGame):
         for x in range(10):
             if self.grid[0][x] is (0, 0, 0):
                 self.grid[0][x] = random.choice(piece_color)
+                
+    def get_score(self):
+        return self.score
