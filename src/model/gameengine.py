@@ -12,7 +12,7 @@ class GameEngine(IObserver):
         self.evManager = evManager
         evManager.register(self)
         self.running = False
-        self.state = StateMachine()
+        self.state = StackMachine()
         self.game = game
         self.clock = pygame.time.Clock()
         self.user = user
@@ -43,7 +43,7 @@ class GameEngine(IObserver):
         return len(self.user.players) == 2
 
 
-class StateMachine:
+class StackMachine:
     def __init__(self):
         self.statestack = []
 
