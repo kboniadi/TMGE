@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from model.score import Score
-
 
 class ITileGame(ABC):
     @abstractmethod
@@ -36,13 +34,13 @@ class ITileGame(ABC):
         pass
 
     @abstractmethod
-    def check_lost(self) -> bool:
+    def check_lost(self):
         pass
 
     @abstractmethod
-    def get_name(self) -> str:
+    def get_name(self):
         pass
 
     @abstractmethod
-    def get_score(self) -> 'Score':
+    def get_score(self):
         pass
