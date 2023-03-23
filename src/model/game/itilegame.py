@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class ITileGame(ABC):
     @abstractmethod
     def initialize(self):
@@ -35,5 +34,13 @@ class ITileGame(ABC):
         pass
 
     @abstractmethod
+    def check_lost(self):
+        pass
+
+    @abstractmethod
     def get_name(self):
+        pass
+
+    @abstractmethod
+    def get_score(self):
         pass

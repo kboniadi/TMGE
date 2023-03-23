@@ -313,4 +313,7 @@ class Tetris(ITileGame):
 			if self.clear_rows():
 				print("seomthing")
 				self.score += 10
+    
+	def get_score(self):
+		return self.score
 
