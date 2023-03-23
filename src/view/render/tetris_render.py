@@ -1,10 +1,10 @@
 import pygame
-from src.view.irender import iRender
+from src.view.render.irender import IRender
 import src.common.constants as Constants
 
 
 
-class TetrisRender(iRender):
+class TetrisRender(IRender):
     def __init__(self):
         self.isinitialized = False
         self.screen = None
@@ -16,8 +16,6 @@ class TetrisRender(iRender):
         # print("Rendering Tetris...")
         # screen = pygame.display.get_surface()
         # print(game_model)
-        if not self.isinitialized:
-            self.initialize()
         self.draw_window(game_model.grid, self.screen, game_model.score.get_score(), game_model.level)
         self.draw_next_shape(game_model.next_piece, self.screen)
         pygame.display.update()
@@ -35,7 +33,8 @@ class TetrisRender(iRender):
 
         font = pygame.font.SysFont('comicsans', 55)
         label = font.render("Tetris", 1, (255, 255, 255))
-        screen.blit(label, (Constants.TOP_LEFT_X + Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
+        screen.blit(label, (Constants.TOP_LEFT_X +
+                    Constants.PLAY_WIDTH / 2 - (label.get_width() / 2), 30))
 
         font = pygame.font.SysFont('comicsans', 30)
         label = font.render('Score: ' + str(score), 1, (255, 255, 255))

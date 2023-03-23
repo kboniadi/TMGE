@@ -1,29 +1,29 @@
 import pygame
 
-from src.model.tetris import Tetris
-from src.model.candycrush import CandyCrush
-from src.model.user import User
-from src.model.player import Player
 from src.controller.keyboard import Keyboard
 from src.listener.eventmanager import EventManagerWeak, TickEvent
+from src.model.game.candycrush import CandyCrush
 from src.model.gameengine import GameEngine
+from src.model.player import Player
+from src.model.game.tetris import Tetris
+from src.model.user import User
+from src.view.render.candycrush_render import CandyCrushRender
 from src.view.canvas import Canvas
-from src.view.tetris_render import TetrisRender
-from src.view.candycrush_render import CandyCrushRender
+from src.view.render.tetris_render import TetrisRender
 
 
-def run(game):
+def run(user):
     evManager = EventManagerWeak()
-    if game == 'tetris':
-        gamemodel = GameEngine(evManager, Tetris())
+    if user.selected_game == 'tetris':
+        gamemodel = GameEngine(evManager, Tetris(), user)
         render_instance = TetrisRender()
-    elif game == 'candy_crush':
-        gamemodel = GameEngine(evManager, CandyCrush())
+    elif user.selected_game == 'candy_crush':
+        gamemodel = GameEngine(evManager, CandyCrush(), user)
         render_instance = CandyCrushRender()
     else:
         raise ValueError("Invalid game selected.")
     keyboard = Keyboard(evManager, gamemodel)
-    graphics = Canvas(evManager, gamemodel, render_instance)
+    canvas = Canvas(evManager, gamemodel, render_instance)
 
     gamemodel.run()
     # while gamemodel.running:
@@ -32,7 +32,6 @@ def run(game):
     #
     # # register the render_instance with the event manager
     # evManager.register(render_instance)
-
 
 
 if __name__ == '__main__':
@@ -74,7 +73,7 @@ if __name__ == '__main__':
         selected_game = int(input())
     if selected_game == 1:
         user.selected_game = "tetris"
-        run(user.selected_game)
+        run(user)
     elif selected_game == 2:
         user.selected_game = "candy_crush"
-        run(user.selected_game)
+        run(user)

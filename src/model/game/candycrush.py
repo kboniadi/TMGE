@@ -1,5 +1,5 @@
-from src.model.itilegame import ITileGame
-from src.game.Score import Score
+from src.model.game.itilegame import ITileGame
+from src.model.score import Score
 import src.common.constants as Constants
 import random
 
@@ -18,6 +18,8 @@ class CandyCrush(ITileGame):
 		self.score = Score()
 		self.level = 0
 		self.cursor = Cursor(0,0)
+		self.swap = False
+		self.levelCount = 1
 	
 	def initialize(self):
 		self.grid = self.create_grid()
@@ -25,6 +27,10 @@ class CandyCrush(ITileGame):
 		self.score.initialize(0,1)
 		self.level = 10
 		self.cursor = Cursor(0,0)
+		self.swap = False
+  
+	def get_name(self):
+		return self.name
 
 	def create_grid(self):
 		grid = [[self.random_piece() for x in range(10)] for x in range(20)]
@@ -35,33 +41,55 @@ class CandyCrush(ITileGame):
 	
 	def check_lost(self):
 		if self.level == 0:
-			if self.score.score < 1000:
+			if self.score.score < (1000*self.levelCount):
 				return True
 			else:
+				self.levelCount += 1
 				self.level = 10
 		return False
 	
 	def handle_down(self):
-		if self.cursor.y != 20:
+		x = self.cursor.x
+		y = self.cursor.y
+		if(self.swap and self.cursor.y != 19):
+			self.grid[y+1][x], self.grid[y][x] = self.grid[y][x], self.grid[y+1][x]
+			self.swap = False
+			self.level -=1
+		elif self.cursor.y != 19:
 			self.cursor.y +=1
 	
 	def handle_up(self):
+		x = self.cursor.x
+		y = self.cursor.y
+		if(self.swap and self.cursor.y != 0):
+			self.grid[y-1][x], self.grid[y][x] = self.grid[y][x], self.grid[y-1][x]
+			self.swap = False
+			self.level -=1
 		if self.cursor.y != 0:
 			self.cursor.y -=1
 
 	def handle_right(self):
-		if self.cursor.x != 8:
+		x = self.cursor.x
+		y = self.cursor.y
+		if(self.swap and self.cursor.x != 9):
+			self.grid[y][x], self.grid[y][x+1] = self.grid[y][x+1], self.grid[y][x] 
+			self.swap = False
+			self.level -=1
+		if self.cursor.x != 9:
 			self.cursor.x +=1
 
 	def handle_left(self):
+		x = self.cursor.x
+		y = self.cursor.y
+		if(self.swap and self.cursor.x != 0):
+			self.grid[y][x], self.grid[y][x-1] = self.grid[y][x-1], self.grid[y][x] 
+			self.swap = False
+			self.level -=1
 		if self.cursor.x != 0:
 			self.cursor.x -=1
 	
 	def handle_space(self):
-		x = self.cursor.x
-		y = self.cursor.y
-		self.grid[y][x], self.grid[y][x+1] = self.grid[y][x+1], self.grid[y][x] 
-		self.level -=1
+		self.swap = True
 
 	def do_pre_tick(self, time):
 		if self.level != 10:
