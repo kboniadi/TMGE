@@ -18,7 +18,7 @@ class CandyCrushRender(IRender):
     def initialize(self, screen):
         pygame.font.init()
         self.screen = screen
-        self.cursor = pygame.image.load('./images/selected.png')
+        self.cursor = pygame.image.load('./assets/images/selected.png')
         self.cursor = pygame.transform.scale(self.cursor, (60, 30))
 
     def draw_window(self, grid, cursor, screen, score, level):
