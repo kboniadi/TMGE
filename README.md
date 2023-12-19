@@ -1,4 +1,4 @@
-# TMGE - INF122 - Group 9
+# TMGE
 An extensible Tile-Matching Game Environment (TMGE) including Tetris and Candy Crush.
 ***
 ## Setup Instructions:
